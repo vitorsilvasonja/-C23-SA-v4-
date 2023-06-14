@@ -2,10 +2,14 @@ const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
+const Constraint= Matter.Constraint
+
 
 let world, engine;
 
-var ball
+var ball,ball2,ball3
+
+var rope,rope2
 
 var ground
 
@@ -34,8 +38,35 @@ function setup() {
     frictionAir:0.01
   }
 
-  ball = Bodies.circle(300,100,50,ballOptions)
+  ball = Bodies.circle(500,100,50,ballOptions)
   World.add(world,ball);
+
+  ball2 = Bodies.circle(500,100,50,ballOptions)
+  World.add(world,ball2);
+
+  ball3 = Bodies.circle(500,100,50,ballOptions)
+  World.add(world,ball3);
+
+rope=Constraint.create({
+  bodyA:ball,
+  pointA:{x:0,y:0},
+  bodyB:ball2,
+  pointB:{x:0,y:0},
+  length:100,
+  stiffness:0.001
+
+})
+
+World.add(world,rope)
+
+rope2=Constraint.create({
+  bodyA:ball2,
+  pointA:{x:0,y:0},
+  bodyB:ball3,
+  pointB:{x:0,y:0},
+  length:100,
+  stiffness:0.001
+})
 
   ground = Bodies.rectangle(300,550,600,20,{isStatic:true})
   World.add(world,ground);
@@ -57,6 +88,10 @@ function draw() {
     ellipseMode(RADIUS)
 
     ellipse(ball.position.x,ball.position.y,50,50)
+
+    ellipse(ball2.position.x,ball2.position.y,50,50)
+
+    ellipse(ball3.position.x,ball3.position.y,50,50)
 
     rect(ground.position.x,ground.position.y,600,20)
 
@@ -83,7 +118,8 @@ function draw() {
 
     angle += 0.1
 
-
+  line(ball.position.x,ball.position.y,ball2.position.x,ball2.position.y)
+  line(ball2.position.x,ball2.position.y,ball3.position.x,ball3.position.y)
 }
 
 function yForce(){
